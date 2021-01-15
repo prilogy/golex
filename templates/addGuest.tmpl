@@ -1,0 +1,30 @@
+{{define "addGuest"}}
+    {{template "header" .Header}}
+    <main class="pageContent" style="margin-top: 40px">
+        <div class="container">
+            <div class="row">
+                <div class="col-8 offset-2">
+                    <form>
+                        {{/*            Номер присваивается автоматически*/}}
+                        <div class="mb-3">
+                            <label for="" class="form-label">Фамилия Имя Отчество</label>
+                            <input name="fio" type="text" class="form-control" id=""
+                                   aria-describedby="emailHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">Паспортные данные</label>
+                            <input name="passport" type="number" class="form-control" id="" aria-describedby="emailHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">Дата рождения</label>
+                            <input name="birthday" type="date" class="form-control" id=""
+                                   aria-describedby="emailHelp">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Готово!</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+    {{template "footer" }}
+{{end}}

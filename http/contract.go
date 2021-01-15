@@ -10,9 +10,9 @@ import (
 	"servPanel/helpers"
 )
 
-func Index(w http.ResponseWriter, r *http.Request) {
-	output := models.Index()
-	data := models.RoomData{}
+func Contract(w http.ResponseWriter, r *http.Request) {
+	output := models.Contract()
+	data := models.BookingData{}
 
 	//Догрузка из БД
 	conn, err := pgx.Connect(context.Background(), "postgres://unidb:Xz4lbm777_@45.90.34.227/hotel")
@@ -22,28 +22,32 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	rows, err := conn.Query(context.Background(), "SELECT " +
 		"public.hotel.hotel_id, public.hotel.name, " +
 		"public.city.city_id, public.city.name, " +
-		"public.area.area_id, public.area.name," +
-		"public.room.room_id, public.room.room_number," +
-		"public.room_type.room_type_id, public.room_type.name," +
-		"public.room_info.price, public.room.status " +
+		"public.area.area_id, public.area.name, " +
+		"public.room.room_id, public.room.room_number, " +
+		"public.room_type.room_type_id, public.room_type.name, " +
+		"public.room_info.price, public.room.status, " +
+		"public.contract.contract_id, public.contract.arrival_date, public.contract.term, public.contract.target " +
 		"FROM public.room " +
 		"INNER JOIN public.room_info USING (room_info_id) " +
 		"INNER JOIN public.hotel USING (hotel_id) " +
 		"INNER JOIN public.room_type USING (room_type_id) " +
 		"INNER JOIN public.city USING (city_id) " +
 		"INNER JOIN public.area USING (area_id) " +
-		"ORDER BY  public.room.room_id ASC")
+		"INNER JOIN public.contract USING (room_id) " +
+		"ORDER BY public.contract.contract_id DESC")
 	defer rows.Close()
 	help.ErrDefaultDetect(err, "QueryRow")
 
-	iData := []models.RoomData{}
+	iData := []models.BookingData{}
 	iCity:= []models.CityData{}
 	iArea := []models.AreaData{}
 	iType := []models.TypeData{}
 	for rows.Next(){
 		err = rows.Scan(&data.HotelId, &data.Hotel, &data.CityId, &data.City,
 			&data.AreaId, &data.Area,&data.RoomId, &data.RoomNumber,
-			&data.RoomTypeId, &data.RoomType, &data.Price, &data.Status)
+			&data.RoomTypeId, &data.RoomType, &data.Price, &data.Status,
+			&data.ContactId, &data.ArrivalDate, &data.Term, &data.Target)
+		data.Year, data.Month, data.Day = data.ArrivalDate.Date()
 		iData = append(iData, data)
 		flag := true
 		for _, val := range iCity {
@@ -77,18 +81,24 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 		helpers.ErrDefaultDetect(err, "Row Scan")
 	}
-	output.Room = append(output.Room, iData...)
+	output.Booking = append(output.Booking, iData...)
 	output.Cities = append(output.Cities, iCity...)
 	output.Areas = append(output.Areas, iArea...)
 	output.Types = append(output.Types, iType...)
 
-	templates, err := template.ParseFiles(
-		"templates/header.tmpl",
-		"templates/index.tmpl",
-		"templates/footer.tmpl")
+	var fm = template.FuncMap{
+		"mul": func(a, b int) int {
+			return a * b
+		},
+	}
 
-	tmpl := templates.Lookup("index.tmpl")
-	err = tmpl.ExecuteTemplate(w, "index", output)
+	templates := template.Must(template.New("contract").Funcs(fm).ParseFiles(
+		"templates/header.tmpl",
+		"templates/contract.tmpl",
+		"templates/footer.tmpl"))
+
+	tmpl := templates.Lookup("contract.tmpl")
+	err = tmpl.ExecuteTemplate(w, "contract", output)
 
 	help.ErrCatch(err, "Перевод в шаблон")
 }

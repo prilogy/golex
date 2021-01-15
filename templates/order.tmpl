@@ -1,0 +1,46 @@
+{{define "order"}}
+    {{template "header" .Header}}
+    {{$guest := .GuestInfo}}
+    <main class="pageContent" style="margin-top: 40px">
+        <div class="container">
+            <div class="row">
+                <div class="col-8 offset-2">
+                    <form>
+                        <div class="row g-3 align-items-center">
+                            <div class="col-auto">
+                                <select name="guest" class="form-select" aria-label="Default select example">
+                                    <option selected>Выберите существующего гостя</option>
+                                    {{range $key, $value := $guest }}
+                                        <option value="{{$value.Id}}">{{$value.Fio}}</option>
+                                    {{end}}
+                                </select>
+                            </div>
+                            <div class="col-auto">
+                                <span id="" class="form-text">или</span>
+                            </div>
+                            <div class="col-auto">
+                                <a href="/add_guest">Добавить нового</a>
+                            </div>
+                        </div>
+                        {{/*            Номер присваивается автоматически*/}}
+                        <div class="mb-3">
+                            <label for="" class="form-label">Дата прибытия</label>
+                            <input name="arrival_date" type="date" class="form-control" id=""
+                                   aria-describedby="emailHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">Продолжительность</label>
+                            <input name="term" type="number" class="form-control" id="" aria-describedby="emailHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">Цель прибытия</label>
+                            <input name="target" type="text" class="form-control" id="" aria-describedby="emailHelp">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Готово!</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+    {{template "footer" }}
+{{end}}

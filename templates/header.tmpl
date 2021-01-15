@@ -6,32 +6,28 @@
         <meta name="viewport"
               content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>BitterBit</title>
-        {{range $key, $value := .Links }}
-            <link rel="{{$value.Rel}}" href="{{$value.Href}}">
-        {{end}}
-
+        <title>Гостиничный комплекс</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+              crossorigin="anonymous">
     </head>
     <body>
     <header>
-        <div class="metaBar">
-            <div class="navBar">
-                {{range $key, $value := .TopBar }}
-                    <a class="navItem" href="{{ $value.Link }}">{{ $value.Name }}</a>
-                {{end}}
-            </div>
-        </div>
-        <div class="mainBar">
-            <div class="wrapperBar">
-                <figure>
-                    <img src="{{.LogoData.Img}}" alt="{{.LogoData.Alt}}">
-                </figure>
-                <div class="menu">
-                    {{range $key, $value := .NavBar }}
-                        <a href="{{ $value.Link }}">{{ $value.Name }}</a>
-                    {{end}}
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="navbarText">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        {{range $key, $value := .NavBar }}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ $value.Link }}">{{ $value.Name }}</a>
+                            </li>
+                        {{end}}
+                    </ul>
+                    <span class="navbar-text">
+                        Панель администратора Гостиничного комплекса
+                    </span>
                 </div>
             </div>
-        </div>
+        </nav>
     </header>
 {{end}}

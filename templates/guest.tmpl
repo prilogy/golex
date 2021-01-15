@@ -1,0 +1,28 @@
+{{define "guest"}}
+    {{template "header" .Header}}
+    {{$guest := .GuestInfo}}
+    <main class="pageContent">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Фамилия Имя Отчество</th>
+                <th scope="col">Пасспорт</th>
+                <th scope="col">Дата рождения</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{range $key, $value := $guest}}
+                <tr>
+                    <th scope="row">{{ $value.Id }}</th>
+                    <td>{{ $value.Fio }}</td>
+                    <td>{{ $value.Passport }}</td>
+                    <td>{{ $value.Day }} {{ $value.Month }} {{ $value.Year }}</td>
+                </tr>
+            {{end}}
+            </tbody>
+        </table>
+
+    </main>
+    {{template "footer" }}
+{{end}}

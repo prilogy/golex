@@ -1,29 +1,49 @@
 package models
 
 import (
-	s "golex/models/static"
+	s "course/models/static"
 )
 
-type ViewData struct{
-	Header		s.HeaderData
+type ViewData struct {
+	Header s.HeaderData
+	Room   []RoomData
+	Cities []CityData
+	Areas  []AreaData
+	Types  []TypeData
 }
 
-type ProductData struct {
-	Name	string
-	Header	string
-	Blocks	[]Block
-}
-
-type Block struct {
-	Img		string
+type CityData struct {
+	Id		int
 	Name 	string
-	Desc	string
+}
+type AreaData struct {
+	Id		int
+	Name 	string
+}
+type TypeData struct {
+	Id		int
+	Name 	string
+}
+
+
+type RoomData struct {
+	HotelId		int
+	Hotel		string
+	CityId		int
+	City		string
+	AreaId		int
+	Area 		string
+	RoomId 		int
+	RoomNumber 	int
+	RoomTypeId	int
+	RoomType	string
+	Price		int
+	Status		bool
 }
 
 func Index() ViewData{
 	data := ViewData{
 		Header: s.Header(),
 	}
-
 	return data
 }

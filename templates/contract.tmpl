@@ -1,6 +1,6 @@
-{{define "index"}}
+{{define "contract"}}
     {{template "header" .Header}}
-    {{$room := .Room}}
+    {{$room := .Booking}}
     {{$city := .Cities}}
     {{$area := .Areas}}
     {{$type := .Types}}
@@ -42,7 +42,7 @@
                         </ul>
                     </li>
                 </ul>
-                <span class="navbar-text">Фильтр по номерам</span>
+                <span class="navbar-text">Фильтр по бронированиям</span>
             </div>
         </div>
     </nav>
@@ -56,22 +56,27 @@
                 <th scope="col">Район</th>
                 <th scope="col">Номер</th>
                 <th scope="col">Тип номера</th>
-                <th scope="col">Стоимость</th>
-                <th scope="col">Статус</th>
+                <th scope="col">Итого</th>
+                <th scope="col">Прибытие</th>
+                <th scope="col">Срок</th>
+                <th scope="col">Цель</th>
+                <th scope="col">Удаление</th>
             </tr>
             </thead>
             <tbody>
             {{range $key, $value := $room}}
                 <tr>
-                    <th scope="row">{{ $value.RoomId }}</th>
+                    <th scope="row">{{ $value.ContactId }}</th>
                     <td>{{ $value.Hotel }}</td>
                     <td>{{ $value.City }}</td>
                     <td>{{ $value.Area }}</td>
                     <td>{{ $value.RoomNumber }}</td>
                     <td>{{ $value.RoomType }}</td>
-                    <td>{{ $value.Price }}</td>
-                    <td id="roomRowId_{{$value.RoomId}}">{{ if eq $value.Status true }} Свободен {{else}} Занят {{end}}</td>
-                    <td>{{ if eq $value.Status true }} <a href="/order">Занять</a> {{else}}<button onclick="cleanRoom({{$value.RoomId}})">Освободить</button> {{end}}</td>
+                    <td>{{ mul $value.Price $value.Term }}</td>
+                    <td>{{ $value.Day }} {{ $value.Month }} {{ $value.Year }}</td>
+                    <td>{{ $value.Term }}</td>
+                    <td>{{ $value.Target }}</td>
+                    <td><a href="">Удалить</a></td>
                 </tr>
             {{end}}
             </tbody>
